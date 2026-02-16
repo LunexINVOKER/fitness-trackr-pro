@@ -1,6 +1,5 @@
 const API = import.meta.env.VITE_API;
 
-/** Fetches an array of activities from the API. */
 export async function getActivities() {
   try {
     const response = await fetch(API + "/activities");
@@ -12,10 +11,17 @@ export async function getActivities() {
   }
 }
 
-/**
- * Sends a new activity to the API to be created.
- * A valid token is required.
- */
+/** Fetches a single activity by ID from the API. */
+
+export async function getActivity(id) {
+  const response = await fetch(API + "/activities/" + id);
+  const result = await response.json();
+  if (!response.ok) {
+    throw Error(result.message);
+  }
+  return result;
+}
+
 export async function createActivity(token, activity) {
   if (!token) {
     throw Error("You must be signed in to create an activity.");
@@ -36,10 +42,6 @@ export async function createActivity(token, activity) {
   }
 }
 
-/**
- * Requests the API to delete the activity with the given ID.
- * A valid token is required.
- */
 export async function deleteActivity(token, id) {
   if (!token) {
     throw Error("You must be signed in to delete an activity.");
